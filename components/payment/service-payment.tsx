@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -8,7 +10,9 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import { CreditCard, AlertCircle, ChevronRight, ChevronLeft, Check } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { CreditCard, AlertCircle, ChevronRight, ChevronLeft, Check, Upload, FileText, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 const products = [
@@ -50,6 +54,13 @@ export function ServicePayment() {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([])
   const [selectedPeriod, setSelectedPeriod] = useState("monthly")
   const [agreedToCancel, setAgreedToCancel] = useState(false)
+
+  // 사업자 정보 등록 상태 (개발자 모드)
+  const [hasBusinessInfo, setHasBusinessInfo] = useState(true)
+
+  // 사업자명/사업자등록증 인라인 입력 (hasBusinessInfo === false일 때 사용)
+  const [businessNameInput, setBusinessNameInput] = useState("")
+  const [businessLicenseFile, setBusinessLicenseFile] = useState<File | null>(null)
 
   // 카드 등록 상태 (개발자 모드)
   const [hasRegisteredCard, setHasRegisteredCard] = useState(true)
@@ -113,7 +124,30 @@ export function ServicePayment() {
     }
   }
 
-  const canProceedStep1 = selectedProducts.length > 0
+  // 사업자등록증 파일 업로드 핸들러
+  const handleBusinessLicenseUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const validTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"]
+      if (!validTypes.includes(file.type)) {
+        alert("JPG, PNG, PDF 파일만 업로드 가능합니다.")
+        return
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        alert("파일 크기는 10MB를 초과할 수 없습니다.")
+        return
+      }
+      setBusinessLicenseFile(file)
+    }
+  }
+
+  const handleBusinessLicenseRemove = () => {
+    setBusinessLicenseFile(null)
+  }
+
+  const canProceedStep1 =
+    selectedProducts.length > 0 &&
+    (hasBusinessInfo || (businessNameInput.trim() !== "" && businessLicenseFile !== null))
 
   const steps = [
     { num: 1, label: "서비스 / 결제수단 선택" },
@@ -124,8 +158,17 @@ export function ServicePayment() {
     <div className="space-y-6">
       {/* 개발자 모드 */}
       <div className="rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 p-3 space-y-2">
-        <p className="text-xs font-semibold text-amber-700">개발자 모드: 카드 등록 상태 전환</p>
+        <p className="text-xs font-semibold text-amber-700">개발자 모드: 상태 전환</p>
         <div className="flex flex-wrap gap-3">
+          <label className="flex items-center gap-1.5 text-xs">
+            <input
+              type="checkbox"
+              checked={hasBusinessInfo}
+              onChange={(e) => setHasBusinessInfo(e.target.checked)}
+              className="rounded"
+            />
+            사업자 정보 등록됨
+          </label>
           <label className="flex items-center gap-1.5 text-xs">
             <input
               type="checkbox"
@@ -173,6 +216,87 @@ export function ServicePayment() {
       {currentStep === 1 && (
         <Card>
           <CardContent className="pt-6 space-y-6">
+            {/* 사업자 정보 미등록 시 인라인 입력 */}
+            {!hasBusinessInfo && (
+              <div className="space-y-4">
+                <Alert className="border-amber-500 bg-amber-50">
+                  <AlertCircle className="h-4 w-4 text-amber-600" />
+                  <AlertDescription className="text-sm text-amber-800">
+                    사업자명(법인명)과 사업자등록증이 등록되지 않았습니다. 서비스 신청을 위해 아래 정보를 입력해주세요.
+                  </AlertDescription>
+                </Alert>
+
+                {/* 사업자명 입력 */}
+                <div className="space-y-2">
+                  <Label htmlFor="businessNameInput" className="text-sm font-medium">
+                    사업자명(법인명) <span className="text-destructive">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="businessNameInput"
+                      value={businessNameInput}
+                      onChange={(e) => setBusinessNameInput(e.target.value)}
+                      placeholder="사업자명을 입력해 주세요."
+                      maxLength={50}
+                      className="pr-16"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                      {businessNameInput.length}/50
+                    </span>
+                  </div>
+                </div>
+
+                {/* 사업자등록증 파일 업로드 */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    사업자등록증 <span className="text-destructive">*</span>
+                  </Label>
+
+                  {!businessLicenseFile ? (
+                    <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+                      <input
+                        type="file"
+                        id="businessLicenseUpload"
+                        className="hidden"
+                        accept="image/jpeg,image/jpg,image/png,application/pdf"
+                        onChange={handleBusinessLicenseUpload}
+                      />
+                      <label htmlFor="businessLicenseUpload" className="cursor-pointer flex flex-col items-center gap-2">
+                        <Upload className="h-8 w-8 text-muted-foreground" />
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">파일을 업로드하세요</p>
+                          <p className="text-xs text-muted-foreground">JPG, PNG, PDF (최대 10MB)</p>
+                        </div>
+                        <Button type="button" variant="outline" size="sm" className="mt-1 bg-transparent">
+                          파일 선택
+                        </Button>
+                      </label>
+                    </div>
+                  ) : (
+                    <div className="border rounded-lg p-4 bg-muted/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded">
+                            <FileText className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">{businessLicenseFile.name}</p>
+                            <p className="text-xs text-muted-foreground">{(businessLicenseFile.size / 1024).toFixed(1)} KB</p>
+                          </div>
+                        </div>
+                        <Button type="button" variant="ghost" size="sm" onClick={handleBusinessLicenseRemove} className="h-8 w-8 p-0">
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">파일 삭제</span>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <Separator />
+              </div>
+            )}
+
             {/* 서비스 선택 */}
             <div className="space-y-3">
               <Label className="text-base font-semibold">서비스 선택</Label>
@@ -349,7 +473,7 @@ export function ServicePayment() {
               <ul className="space-y-1 text-muted-foreground ml-6">
                 <li>{"- "}구독을 해지하면 다음 결제일부터 자동결제가 중단되며, 현재 구독 기간 종료 시까지 이용 가능합니다.</li>
                 <li>{"- "}<strong className="text-foreground">결제 당일에는 전액 환불이 가능</strong>합니다.</li>
-                <li>{"- "}결제 당일이 아닌 경우 부분 환불은 불가하며, 구독 기간 종료 시 자동으로 해지됩니다.</li>
+                <li>{"- "}결제 당일이 아닌 경우 부분 환불은 불가하며, ���독 기간 종료 시 자동으로 해지됩니다.</li>
                 <li>{"- "}무료이용권으로 이용 중인 기간은 환불 대상에서 제외됩니다.</li>
               </ul>
               <div className="flex items-center space-x-2 pt-2 ml-6">
@@ -370,7 +494,7 @@ export function ServicePayment() {
             <Button
               className="w-full"
               size="lg"
-              disabled={selectedProducts.length === 0 || !agreedToCancel}
+              disabled={!canProceedStep1 || !agreedToCancel}
               onClick={() => {
                 setPaymentMethod(hasRegisteredCard ? "existing" : "new")
                 setCurrentStep(2)
@@ -399,6 +523,24 @@ export function ServicePayment() {
                     </Badge>
                   ))}
               </div>
+              {!hasBusinessInfo && businessNameInput.trim() !== "" && (
+                <>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">사업자명(법인명)</span>
+                    <span className="font-medium">{businessNameInput}</span>
+                  </div>
+                  {businessLicenseFile && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">사업자등록증</span>
+                      <span className="font-medium flex items-center gap-1.5">
+                        <FileText className="h-3.5 w-3.5" />
+                        {businessLicenseFile.name}
+                      </span>
+                    </div>
+                  )}
+                  <Separator />
+                </>
+              )}
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">구독 유형</span>
                 <span className="font-medium">{selectedPeriod === "monthly" ? "월간 구독" : "연간 구독"}</span>
