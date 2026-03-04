@@ -11,6 +11,9 @@ import { Upload, FileText, X, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function CompanyInfoPage() {
+  // 유료 서비스 이용 중 상태 (개발자 모드)
+  const [isUsingPaidService, setIsUsingPaidService] = useState(false)
+
   const [companyName, setCompanyName] = useState("블름사업개발팀")
   const [representativeName, setRepresentativeName] = useState("헤이데어공식")
   const [businessName, setBusinessName] = useState("")
@@ -39,15 +42,26 @@ export default function CompanyInfoPage() {
   }
 
   const handleFileRemove = () => {
+    if (isUsingPaidService) return
     setBusinessLicense(null)
   }
 
+  const handleBusinessNameClear = () => {
+    if (isUsingPaidService) return
+    setBusinessName("")
+  }
+
   const handleSubmit = () => {
-    if (!businessLicense) {
-      alert("사업자등록증을 첨부해주세요.")
-      return
+    if (isUsingPaidService) {
+      if (!businessName.trim()) {
+        alert("유료 서비스 이용 중에는 사업자명이 필수입니다.")
+        return
+      }
+      if (!businessLicense) {
+        alert("유료 서비스 이용 중에는 사업자등록증이 필수입니다.")
+        return
+      }
     }
-    console.log("[v0] Company info updated with business license")
     alert("회사 정보가 수정되었습니다.")
   }
 
@@ -62,12 +76,37 @@ export default function CompanyInfoPage() {
 
       <div className="flex-1 overflow-y-auto px-8 py-6">
         <div className="mx-auto max-w-3xl space-y-6">
-          <Alert className="border-amber-500 bg-amber-50">
-            <AlertCircle className="h-4 w-4 text-amber-600" />
-            <AlertDescription className="text-sm text-amber-800">
-              사업자등록증이 없으면 유료상품을 결제할 수 없습니다. 사업자등록증을 첨부해주세요.
-            </AlertDescription>
-          </Alert>
+          {/* 개발자 모드 */}
+          <div className="rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 p-3 space-y-2">
+            <p className="text-xs font-semibold text-amber-700">개발자 모드: 상태 전환</p>
+            <div className="flex flex-wrap gap-3">
+              <label className="flex items-center gap-1.5 text-xs">
+                <input
+                  type="checkbox"
+                  checked={isUsingPaidService}
+                  onChange={(e) => setIsUsingPaidService(e.target.checked)}
+                  className="rounded"
+                />
+                유료 서비스 이용 중
+              </label>
+            </div>
+          </div>
+
+          {isUsingPaidService ? (
+            <Alert className="border-blue-500 bg-blue-50">
+              <AlertCircle className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-sm text-blue-800">
+                유료 서비스 이용 중에는 사업자명과 사업자등록증을 삭제할 수 없습니다.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <Alert className="border-amber-500 bg-amber-50">
+              <AlertCircle className="h-4 w-4 text-amber-600" />
+              <AlertDescription className="text-sm text-amber-800">
+                사업자명과 사업자등록증이 없으면 유료상품을 결제할 수 없습니다. 사전에 미리 등록해주세요.
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* 회사명 */}
           <div className="space-y-2">
@@ -110,7 +149,7 @@ export default function CompanyInfoPage() {
           {/* 사업자명 */}
           <div className="space-y-2">
             <Label htmlFor="businessName" className="text-sm font-medium">
-              사업자명
+              사업자명 {isUsingPaidService && <span className="text-destructive">*</span>}
             </Label>
             <div className="relative">
               <Input
@@ -167,7 +206,7 @@ export default function CompanyInfoPage() {
 
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              사업자등록증 <span className="text-destructive">*</span>
+              사업자등록증 {isUsingPaidService && <span className="text-destructive">*</span>}
             </Label>
 
             {!businessLicense ? (
@@ -202,8 +241,17 @@ export default function CompanyInfoPage() {
                       <p className="text-xs text-muted-foreground">{(businessLicense.size / 1024).toFixed(1)} KB</p>
                     </div>
                   </div>
-                  <Button type="button" variant="ghost" size="sm" onClick={handleFileRemove} className="h-8 w-8 p-0">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleFileRemove}
+                    disabled={isUsingPaidService}
+                    className="h-8 w-8 p-0"
+                    title={isUsingPaidService ? "유료 서비스 이용 중에는 삭제할 수 없습니다." : "파일 삭제"}
+                  >
                     <X className="h-4 w-4" />
+                    <span className="sr-only">파일 삭제</span>
                   </Button>
                 </div>
               </div>
