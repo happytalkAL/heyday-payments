@@ -122,7 +122,7 @@ export default function PaymentHistoryPage() {
 
   return (
     <>
-      <div className="container mx-auto p-6 max-w-4xl space-y-6">
+      <div className="container mx-auto p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">결제내역</h1>
