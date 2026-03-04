@@ -90,7 +90,7 @@ const menuItems = [
     title: "설정",
     icon: Settings,
     items: [
-      { title: "회사 정보 관리", url: "/settings/company", clickable: false },
+      { title: "회사 정보 관리", url: "/settings/company", clickable: true },
       { title: "나의 계정 정보", url: "/settings/account", clickable: false },
     ],
   },
