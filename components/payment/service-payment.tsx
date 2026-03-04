@@ -471,10 +471,9 @@ export function ServicePayment() {
                 <h4 className="font-semibold">구독 해지 안내</h4>
               </div>
               <ul className="space-y-1 text-muted-foreground ml-6">
-                <li>{"- "}구독을 해지하면 다음 결제일부터 자동결제가 중단되며, 현재 구독 기간 종료 시까지 이용 가능합니다.</li>
-                <li>{"- "}<strong className="text-foreground">결제 당일에는 전액 환불이 가능</strong>합니다.</li>
-                <li>{"- "}결제 당일이 아닌 경우 부분 환불은 불가하며, ���독 기간 종료 시 자동으로 해지됩니다.</li>
-                <li>{"- "}무료이용권으로 이용 중인 기간은 환불 대상에서 제외됩니다.</li>
+                <li>{"- "}구독을 해지하면 다음 결제일부터 자동결제가 중단됩니다.</li>
+                <li>{"- "}현재 구독 기간까지는 정상적으로 이용 가능합니다.</li>
+                <li>{"- "}<strong className="text-foreground">결제 당일에는 전액 환불이 가능</strong>합니다. 결제 당일이 아닌 경우 부분 환불은 불가하며, 현재 구독 기간 종료 시 자동으로 해지됩니다.</li>
               </ul>
               <div className="flex items-center space-x-2 pt-2 ml-6">
                 <input
