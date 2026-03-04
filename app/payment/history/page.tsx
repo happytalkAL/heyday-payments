@@ -122,18 +122,21 @@ export default function PaymentHistoryPage() {
 
   return (
     <>
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">결제내역</h1>
+      <div className="container mx-auto p-6 max-w-4xl space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">결제내역</h1>
+            <p className="text-sm text-muted-foreground mt-1">결제 및 환불 내역을 조회하고 영수증을 확인할 수 있습니다.</p>
+          </div>
           <Button variant="outline" onClick={handleExcelDownload}>
             <Download className="h-4 w-4 mr-2" />
             엑셀 다운로드
           </Button>
         </div>
 
-        <Card className="p-6">
+        <Card className="p-6 space-y-6">
           {/* 필터 */}
-          <div className="mb-6 flex flex-wrap gap-3 items-center">
+          <div className="flex flex-wrap gap-3 items-center">
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="bg-transparent">
@@ -173,7 +176,7 @@ export default function PaymentHistoryPage() {
           </div>
 
           {/* 탭 */}
-          <Tabs value={selectedTab} onValueChange={setSelectedTab} className="mb-6">
+          <Tabs value={selectedTab} onValueChange={setSelectedTab}>
             <TabsList>
               <TabsTrigger value="all">전체({mockPayments.length})</TabsTrigger>
               <TabsTrigger value="결제완료">결제완료({countByStatus("결제완료")})</TabsTrigger>
