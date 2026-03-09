@@ -116,16 +116,11 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
               </>
             )}
 
-            {/* 구독중 + 무료이용권: 무료이용권 정보 추가 표시 */}
-            {currentStatus === "구독중" && service.freeTicket && (
+            {/* 구독중 + 무료이용권: 구독 종료일 표시 */}
+            {currentStatus === "구독중" && service.freeTicket && service.endDate && (
               <>
-                <Separator className="col-span-2 my-2" />
-                <span className="text-muted-foreground">무료이용권 기간</span>
-                <span className="text-right font-medium">
-                  {service.freeTicket.freePeriodStart} ~ {service.freeTicket.freePeriodEnd}
-                </span>
-                <span className="text-muted-foreground">무료이용권 남은 기간</span>
-                <span className="text-right font-medium text-green-600">{service.freeTicket.remainingDays}일</span>
+                <span className="text-muted-foreground">구독 종료일</span>
+                <span className="text-right font-medium">{service.endDate}</span>
               </>
             )}
 
@@ -161,10 +156,32 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
           </div>
 
           {/* 구독중 + 무료이용권 안내 */}
-          {currentStatus === "구독중" && service.freeTicket && (
-            <div className="bg-green-50 border border-green-200 p-3 rounded-md text-sm text-green-900 space-y-1">
-              <p className="font-semibold">무료이용권 사용 중</p>
-              <p>현재 무료이용권으로 이용 중입니다. 무료이용권 기간 종료 후 <strong>{service.nextPaymentDate}</strong>부터 유료 구독 결제가 진행됩니다.</p>
+          {currentStatus === "구독중" && service.freeTicket && service.endDate && (
+            <div className="bg-blue-50 border border-blue-200 p-4 rounded-md text-sm space-y-3">
+              <p className="font-semibold text-blue-900">무료이용권이 제공됩니다</p>
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold">1</div>
+                  <div className="flex-1">
+                    <p className="font-medium text-blue-900">구독 이용</p>
+                    <p className="text-blue-700">{service.startDate} ~ {service.endDate}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold">2</div>
+                  <div className="flex-1">
+                    <p className="font-medium text-green-900">무료이용권</p>
+                    <p className="text-green-700">{service.freeTicket.freePeriodStart} ~ {service.freeTicket.freePeriodEnd} ({service.freeTicket.remainingDays}일)</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-xs font-bold">3</div>
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-700">다음 결제 예정일</p>
+                    <p className="text-gray-600">{service.nextPaymentDate}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

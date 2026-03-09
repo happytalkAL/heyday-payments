@@ -95,14 +95,15 @@ const subscribedWithFreeServices = [
     status: "구독중" as const,
     subscriptionType: "연간 구독" as const,
     startDate: "2026.01.20",
+    endDate: "2027.01.19", // 구독 종료일 (1년)
     amount: "월 55,000원(VAT포함)",
     isPaymentToday: false,
     freeTicket: {
-      freePeriodStart: "2026.02.01",
-      freePeriodEnd: "2026.04.01",
-      remainingDays: 40,
+      freePeriodStart: "2027.01.20", // 구독 종료 다음날부터
+      freePeriodEnd: "2027.03.19", // 2달간
+      remainingDays: 60,
     },
-    nextPaymentDate: "2026.04.02", // 무료이용권 종료 후 다음 결제
+    nextPaymentDate: "2027.03.20", // 무료이용권 종료 후 다음 결제
   },
 ]
 
