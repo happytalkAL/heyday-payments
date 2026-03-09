@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 
-type Scenario = "subscribed" | "cancelling" | "free" | "free-subscribed" | "none"
+type Scenario = "subscribed" | "cancelling" | "free" | "free-subscribed" | "subscribed-with-free" | "none"
 
 const subscribedServices = [
   {
@@ -63,7 +63,7 @@ const freeServices = [
     id: "masudong",
     serviceName: "마수동",
     status: "무료이용중" as const,
-    subscriptionType: "연간 구독" as const,
+    subscriptionType: "" as "월간 구독" | "연간 구독",
     freePeriodStart: "2026.02.01",
     freePeriodEnd: "2026.04.01",
     remainingDays: 40,
@@ -84,6 +84,25 @@ const freeSubscribedServices = [
     subscriptionStartDate: "2026.04.02",
     amount: "월 55,000원(VAT포함)",
     isPaymentToday: false,
+  },
+]
+
+// 구독중 + 무료이용권 동시 보유
+const subscribedWithFreeServices = [
+  {
+    id: "masudong",
+    serviceName: "마수동",
+    status: "구독중" as const,
+    subscriptionType: "연간 구독" as const,
+    startDate: "2026.01.20",
+    amount: "월 55,000원(VAT포함)",
+    isPaymentToday: false,
+    freeTicket: {
+      freePeriodStart: "2026.02.01",
+      freePeriodEnd: "2026.04.01",
+      remainingDays: 40,
+    },
+    nextPaymentDate: "2026.04.02", // 무료이용권 종료 후 다음 결제
   },
 ]
 
@@ -133,6 +152,7 @@ export default function SubscriptionPage() {
       case "cancelling": return cancellingServices
       case "free": return freeServices
       case "free-subscribed": return freeSubscribedServices
+      case "subscribed-with-free": return subscribedWithFreeServices
       case "none": return []
     }
   }
@@ -153,6 +173,7 @@ export default function SubscriptionPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="subscribed">구독중 (복수 상품)</SelectItem>
+              <SelectItem value="subscribed-with-free">구독중 + 무료이용권</SelectItem>
               <SelectItem value="cancelling">해지예정</SelectItem>
               <SelectItem value="free">무료이용중 (구독 미신청)</SelectItem>
               <SelectItem value="free-subscribed">무료이용중 (구독 신청완료)</SelectItem>

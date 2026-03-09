@@ -82,7 +82,9 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
               <h3 className="text-lg font-semibold">{service.serviceName}</h3>
               <Badge className={config.color}>{currentStatus}</Badge>
             </div>
-            <span className="text-sm text-muted-foreground">{service.subscriptionType}</span>
+            {service.subscriptionType && (
+              <span className="text-sm text-muted-foreground">{service.subscriptionType}</span>
+            )}
           </div>
 
           <Separator />
@@ -111,6 +113,19 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
                     <span className="text-right font-medium">{service.amount}</span>
                   </>
                 )}
+              </>
+            )}
+
+            {/* 구독중 + 무료이용권: 무료이용권 정보 추가 표시 */}
+            {currentStatus === "구독중" && service.freeTicket && (
+              <>
+                <Separator className="col-span-2 my-2" />
+                <span className="text-muted-foreground">무료이용권 기간</span>
+                <span className="text-right font-medium">
+                  {service.freeTicket.freePeriodStart} ~ {service.freeTicket.freePeriodEnd}
+                </span>
+                <span className="text-muted-foreground">무료이용권 남은 기간</span>
+                <span className="text-right font-medium text-green-600">{service.freeTicket.remainingDays}일</span>
               </>
             )}
 
@@ -144,6 +159,14 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
               </>
             )}
           </div>
+
+          {/* 구독중 + 무료이용권 안내 */}
+          {currentStatus === "구독중" && service.freeTicket && (
+            <div className="bg-green-50 border border-green-200 p-3 rounded-md text-sm text-green-900 space-y-1">
+              <p className="font-semibold">무료이용권 사용 중</p>
+              <p>현재 무료이용권으로 이용 중입니다. 무료이용권 기간 종료 후 <strong>{service.nextPaymentDate}</strong>부터 유료 구독 결제가 진행됩니다.</p>
+            </div>
+          )}
 
           {/* 해지예정 안내 */}
           {currentStatus === "해지예정" && service.endDate && (
