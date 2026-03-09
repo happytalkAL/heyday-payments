@@ -31,6 +31,12 @@ interface SubscriptionService {
   freePeriodEnd?: string
   remainingDays?: number
   subscriptionStartDate?: string
+  // 구독중 + 무료이용권 동시 보유 시
+  freeTicket?: {
+    freePeriodStart: string
+    freePeriodEnd: string
+    remainingDays: number
+  }
   amount: string
   isPaymentToday: boolean
 }
