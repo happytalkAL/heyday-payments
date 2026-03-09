@@ -57,7 +57,7 @@ const mockPayments = [
     id: 3,
     date: "2026.01.15 10:00:00",
     status: "결제취소",
-    product: "유료 채팅상담",
+    product: "SNS연동 무제한 채팅상담",
     subscriptionType: "연간 구독",
     method: "신한카드 0000-xxxx-xxxx-5678",
     amount: 106920,

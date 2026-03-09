@@ -36,7 +36,7 @@ const products = [
   },
   {
     id: "chat",
-    name: "유료 채팅상담",
+    name: "SNS연동 무제한 채팅상담",
     description: "카카오/네이버 채팅상담 무제한 제공",
     monthlyPrice: 9000,
     yearlyPrice: 97200,

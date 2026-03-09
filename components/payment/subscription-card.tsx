@@ -184,7 +184,7 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
           {/* 액션 버튼 */}
           <div className="flex justify-end gap-2 pt-2">
             {currentStatus === "구독중" && (
-              <Button variant="outline" onClick={() => setShowCancelDialog(true)}>
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground h-8 px-2 text-xs" onClick={() => setShowCancelDialog(true)}>
                 구독 해지
               </Button>
             )}
@@ -194,7 +194,7 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
               </Button>
             )}
             {currentStatus === "무료이용중" && service.subscriptionStartDate && !isCancelledPreSubscription && (
-              <Button variant="outline" onClick={() => setShowCancelPreSubDialog(true)}>
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground h-8 px-2 text-xs" onClick={() => setShowCancelPreSubDialog(true)}>
                 구독 신청 해지
               </Button>
             )}

@@ -103,7 +103,7 @@ const todayPaymentServices = [
 const allProducts = [
   { id: "masudong", name: "마수동", description: "마케팅 수신동의 자동 전환 메시지 팝업 노출" },
   { id: "simple-join", name: "간편가입", description: "카카오/네이버 간편가입 제공" },
-  { id: "chat", name: "유료 채팅상담", description: "카카오/네이버 채팅상담 무제한 제공" },
+  { id: "chat", name: "SNS연동 무제한 채팅상담", description: "카카오/네이버 채팅상담 무제한 제공" },
 ]
 
 export default function SubscriptionPage() {
