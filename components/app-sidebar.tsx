@@ -32,73 +32,79 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const menuItems = [
   {
-    title: "대시보드",
+    title: "\uB300\uC2DC\uBCF4\uB4DC",
     icon: LayoutDashboard,
     url: "/dashboard",
     clickable: false,
   },
   {
-    title: "에이보드",
+    title: "\uC5D0\uC774\uBCF4\uB4DC",
     icon: BarChart3,
     url: "/aboard",
     clickable: false,
   },
   {
-    title: "고객 관리",
+    title: "\uACE0\uAC1D \uAD00\uB9AC",
     icon: UserCircle,
-    items: [{ title: "고객 리스트", url: "/customers/list", clickable: false }],
+    items: [{ title: "\uACE0\uAC1D \uB9AC\uC2A4\uD2B8", url: "/customers/list", clickable: false }],
   },
   {
-    title: "마케팅",
+    title: "\uB9C8\uCF00\uD305",
     icon: Bell,
     items: [
-      { title: "마케팅 인원", url: "/marketing/users", clickable: false },
-      { title: "마케팅 만들기", url: "/marketing/create", badge: "N", clickable: false },
+      { title: "\uB9C8\uCF00\uD305 \uC778\uC6D0", url: "/marketing/users", clickable: false },
+      { title: "\uB9C8\uCF00\uD305 \uB9CC\uB4E4\uAE30", url: "/marketing/create", badge: "N", clickable: false },
     ],
   },
   {
-    title: "서비스 연동",
+    title: "\uC11C\uBE44\uC2A4 \uC5F0\uB3D9",
     icon: Link2,
     badge: "N",
     url: "/services",
     clickable: false,
   },
   {
-    title: "통계",
+    title: "\uD1B5\uACC4",
     icon: BarChart3,
     items: [
-      { title: "고객 유입 통계", url: "/stats/inflow", clickable: false },
-      { title: "마케팅 통계", url: "/stats/marketing", clickable: false },
+      { title: "\uACE0\uAC1D \uC720\uC785 \uD1B5\uACC4", url: "/stats/inflow", clickable: false },
+      { title: "\uB9C8\uCF00\uD305 \uD1B5\uACC4", url: "/stats/marketing", clickable: false },
     ],
   },
   {
-    title: "명의 관리",
+    title: "\uBA85\uC758 \uAD00\uB9AC",
     icon: UserCircle,
     url: "/users",
     clickable: false,
   },
   {
-    title: "유료서비스",
+    title: "\uC720\uB8CC\uC11C\uBE44\uC2A4",
     icon: CreditCard,
     items: [
-      { title: "구독현황", url: "/payment/subscription", clickable: true },
-      { title: "서비스 신청", url: "/payment/apply", clickable: true },
-      { title: "결제내역", url: "/payment/history", clickable: true },
+      { title: "\uAD6C\uB3C5\uD604\uD669", url: "/payment/subscription", clickable: true },
+      { title: "\uC11C\uBE44\uC2A4 \uC2E0\uCCAD", url: "/payment/apply", clickable: true },
+      { title: "\uACB0\uC81C\uB0B4\uC5ED", url: "/payment/history", clickable: true },
     ],
   },
   {
-    title: "설정",
+    title: "\uC124\uC815",
     icon: Settings,
     items: [
-      { title: "회사 정보 관리", url: "/settings/company", clickable: true },
-      { title: "나의 계정 정보", url: "/settings/account", clickable: false },
+      { title: "\uD68C\uC0AC \uC815\uBCF4 \uAD00\uB9AC", url: "/settings/company", clickable: true },
+      { title: "\uB098\uC758 \uACC4\uC815 \uC815\uBCF4", url: "/settings/account", clickable: false },
     ],
   },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
-  const [openItems, setOpenItems] = React.useState<string[]>(["고객 관리", "마케팅", "통계", "유료서비스", "설정"])
+  const [openItems, setOpenItems] = React.useState<string[]>([
+    "\uACE0\uAC1D \uAD00\uB9AC",
+    "\uB9C8\uCF00\uD305",
+    "\uD1B5\uACC4",
+    "\uC720\uB8CC\uC11C\uBE44\uC2A4",
+    "\uC124\uC815"
+  ])
 
   const toggleItem = (title: string) => {
     setOpenItems((prev) => (prev.includes(title) ? prev.filter((item) => item !== title) : [...prev, title]))
