@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CreditCard, AlertCircle, ChevronRight, ChevronLeft, Check, Upload, FileText, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { TermsDialog } from "@/components/payment/terms-dialog"
 
 const products = [
   {
@@ -57,6 +58,9 @@ export function ServicePayment() {
 
   // 사업자 정보 등록 상태 (개발자 모드)
   const [hasBusinessInfo, setHasBusinessInfo] = useState(true)
+
+  // 약관 팝업 상태
+  const [termsDialogOpen, setTermsDialogOpen] = useState(false)
 
   // 사업자명/사업자등록증 인라인 입력 (hasBusinessInfo === false일 때 사용)
   const [businessNameInput, setBusinessNameInput] = useState("")
@@ -470,11 +474,15 @@ export function ServicePayment() {
                 <span className="inline-block px-2 py-0.5 bg-destructive text-white text-xs font-semibold rounded">필수</span>
                 <h4 className="font-semibold pt-1">유료서비스 이용 및 결제약관 동의</h4>
               </div>
-              <ul className="space-y-2 text-muted-foreground ml-6">
-                <li>{"• "}유료서비스 이용약관 및 결제정책에 동의합니다.</li>
-                <li>{"• "}구독 시작 후 언제든지 해지할 수 있으며, 해지 시 다음 결제일부터 자동결제가 중단됩니다.</li>
-                <li>{"• "}결제 당일 해지 시 <strong className="text-foreground">전액 환불</strong>이 가능하며, 그 외의 경우 환불되지 않습니다.</li>
-              </ul>
+              <p className="text-muted-foreground ml-6">
+                <button
+                  type="button"
+                  onClick={() => setTermsDialogOpen(true)}
+                  className="text-primary hover:underline font-medium"
+                >
+                  약관 전문 보기
+                </button>
+              </p>
               <div className="flex items-center space-x-2 pt-2 ml-6">
                 <input
                   type="checkbox"
@@ -653,7 +661,9 @@ export function ServicePayment() {
             </div>
           </CardContent>
         </Card>
-      )}
-    </div>
+        )}
+      </div>
+      <TermsDialog open={termsDialogOpen} onOpenChange={setTermsDialogOpen}
+    />
   )
 }
