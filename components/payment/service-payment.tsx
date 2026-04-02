@@ -663,7 +663,7 @@ export function ServicePayment() {
         </Card>
         )}
       </div>
-      <TermsDialog open={termsDialogOpen} onOpenChange={setTermsDialogOpen}
-    />
+      <TermsDialog open={termsDialogOpen} onOpenChange={setTermsDialogOpen} />
+    </>
   )
 }
