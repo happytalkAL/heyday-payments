@@ -464,27 +464,27 @@ export function ServicePayment() {
               </div>
             )}
 
-            {/* 구독 해지 안내 동의 */}
-            <div className="rounded-lg bg-muted p-4 space-y-2 text-sm">
+            {/* 유료서비스 이용 및 결제약관 동의 */}
+            <div className="rounded-lg bg-muted p-4 space-y-3 text-sm">
               <div className="flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 mt-0.5 text-amber-600 flex-shrink-0" />
-                <h4 className="font-semibold">구독 해지 안내</h4>
+                <span className="inline-block px-2 py-0.5 bg-destructive text-white text-xs font-semibold rounded">필수</span>
+                <h4 className="font-semibold pt-1">유료서비스 이용 및 결제약관 동의</h4>
               </div>
-              <ul className="space-y-1 text-muted-foreground ml-6">
-                <li>{"- "}구독을 해지하면 다음 결제일부터 자동결제가 중단됩니다.</li>
-                <li>{"- "}현재 구독 기간까지는 정상적으로 이용 가능합니다.</li>
-                <li>{"- "}<strong className="text-foreground">결제 당일에는 전액 환불이 가능</strong>합니다. 결제 당일이 아닌 경우 부분 환불은 불가하며, 현재 구독 기간 종료 시 자동으로 해지됩니다.</li>
+              <ul className="space-y-2 text-muted-foreground ml-6">
+                <li>{"• "}유료서비스 이용약관 및 결제정책에 동의합니다.</li>
+                <li>{"• "}구독 시작 후 언제든지 해지할 수 있으며, 해지 시 다음 결제일부터 자동결제가 중단됩니다.</li>
+                <li>{"• "}결제 당일 해지 시 <strong className="text-foreground">전액 환불</strong>이 가능하며, 그 외의 경우 환불되지 않습니다.</li>
               </ul>
               <div className="flex items-center space-x-2 pt-2 ml-6">
                 <input
                   type="checkbox"
-                  id="agree-cancel"
+                  id="agree-terms"
                   checked={agreedToCancel}
                   onChange={(e) => setAgreedToCancel(e.target.checked)}
                   className="h-4 w-4 rounded border-gray-300"
                 />
-                <Label htmlFor="agree-cancel" className="font-normal cursor-pointer">
-                  위 구독 해지 안내를 확인하였습니다.
+                <Label htmlFor="agree-terms" className="font-normal cursor-pointer">
+                  위 약관에 동의합니다.
                 </Label>
               </div>
             </div>
