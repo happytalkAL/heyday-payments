@@ -154,7 +154,7 @@ export function ServicePayment() {
     (hasBusinessInfo || (businessNameInput.trim() !== "" && businessLicenseFile !== null))
 
   const steps = [
-    { num: 1, label: "서비스 / 결제수단 선택" },
+    { num: 1, label: "서비스 / 결제수��� 선택" },
     { num: 2, label: "카드 선택 / 결제" },
   ]
 
@@ -664,6 +664,6 @@ export function ServicePayment() {
         )}
       </div>
       <TermsDialog open={termsDialogOpen} onOpenChange={setTermsDialogOpen} />
-    </>
+    </div>
   )
 }
