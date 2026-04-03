@@ -159,7 +159,6 @@ export function ServicePayment() {
   ]
 
   return (
-    <>
     <div className="space-y-6">
       {/* 개발자 모드 */}
       <div className="rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 p-3 space-y-2">
@@ -663,9 +662,8 @@ export function ServicePayment() {
           </CardContent>
         </Card>
         )}
+        <TermsDialog open={termsDialogOpen} onOpenChange={setTermsDialogOpen} />
       </div>
-      <TermsDialog open={termsDialogOpen} onOpenChange={setTermsDialogOpen} />
     </div>
-    </>
   )
 }
