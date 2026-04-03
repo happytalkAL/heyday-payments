@@ -662,7 +662,6 @@ export function ServicePayment() {
           </CardContent>
         </Card>
         )}
-      </div>
       <TermsDialog
         open={termsDialogOpen}
         onOpenChange={setTermsDialogOpen}
