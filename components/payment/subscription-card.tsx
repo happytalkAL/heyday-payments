@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Clock, ArrowRight } from "lucide-react"
+import { Clock, ArrowRight, AlertTriangle, Link2Off } from "lucide-react"
 import { CancelSubscriptionDialog } from "./cancel-subscription-dialog"
 import {
   AlertDialog,
@@ -18,6 +18,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import Link from "next/link"
+
+interface IntegrationItem {
+  name: string        // 예: "카페24", "카카오톡", "네이버톡톡"
+  connected: boolean
+  linkUrl?: string    // 연동 설정 페이지 경로
+}
 
 interface SubscriptionService {
   id: string
@@ -37,6 +43,8 @@ interface SubscriptionService {
     freePeriodEnd: string
     remainingDays: number
   }
+  // 서비스 이용에 필요한 외부 연동 목록
+  integrations?: IntegrationItem[]
   amount: string
   isPaymentToday: boolean
 }
@@ -181,6 +189,38 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
                     <p className="text-gray-600">{service.nextPaymentDate}</p>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* 미연동 서비스 경고 */}
+          {service.integrations && service.integrations.some((i) => !i.connected) && (
+            <div className="rounded-md border border-red-200 bg-red-50 p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <Link2Off className="h-4 w-4 text-red-600 flex-shrink-0" />
+                <p className="text-sm font-semibold text-red-800">연동 해지로 인해 서비스를 원활하게 이용할 수 없습니다.</p>
+              </div>
+              <div className="space-y-2">
+                {service.integrations.filter((i) => !i.connected).map((integration) => (
+                  <div key={integration.name} className="flex items-center justify-between rounded-md bg-white border border-red-100 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
+                      <span className="text-sm text-red-700 font-medium">{integration.name}</span>
+                      <span className="text-xs text-red-500">미연동</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-3 text-xs border-red-200 text-red-700 hover:bg-red-50 bg-white"
+                      asChild
+                    >
+                      <Link href={integration.linkUrl ?? "/settings"}>
+                        연동하러 가기
+                        <ArrowRight className="ml-1 h-3 w-3" />
+                      </Link>
+                    </Button>
+                  </div>
+                ))}
               </div>
             </div>
           )}

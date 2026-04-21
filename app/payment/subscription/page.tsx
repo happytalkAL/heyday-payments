@@ -22,7 +22,7 @@ import Link from "next/link"
 
 type Scenario = "subscribed" | "cancelling" | "free" | "free-subscribed" | "subscribed-with-free" | "none"
 
-const subscribedServices = [
+const buildSubscribedServices = (cafe24Connected: boolean, kakaoConnected: boolean, naverConnected: boolean) => [
   {
     id: "masudong",
     serviceName: "마수동",
@@ -32,16 +32,23 @@ const subscribedServices = [
     startDate: "2026.01.20",
     amount: "월 55,000원(VAT포함)",
     isPaymentToday: false,
+    integrations: [
+      { name: "카페24", connected: cafe24Connected, linkUrl: "/settings/company" },
+    ],
   },
   {
-    id: "simple-join",
-    serviceName: "간편가입",
+    id: "chat",
+    serviceName: "SNS연동 무제한 채팅상담",
     status: "구독중" as const,
     subscriptionType: "월간 구독" as const,
     nextPaymentDate: "2026.03.20",
     startDate: "2026.02.01",
     amount: "월 33,000원(VAT포함)",
     isPaymentToday: false,
+    integrations: [
+      { name: "카카오톡", connected: kakaoConnected, linkUrl: "/settings/company" },
+      { name: "네이버톡톡", connected: naverConnected, linkUrl: "/settings/company" },
+    ],
   },
 ]
 
@@ -128,6 +135,9 @@ const allProducts = [
 
 export default function SubscriptionPage() {
   const [scenario, setScenario] = useState<Scenario>("subscribed")
+  const [cafe24Connected, setCafe24Connected] = useState(true)
+  const [kakaoConnected, setKakaoConnected] = useState(true)
+  const [naverConnected, setNaverConnected] = useState(true)
   const [registeredCard, setRegisteredCard] = useState({
     brand: "신한카드",
     number: "0000-xxxx-xxxx-1234",
@@ -149,7 +159,7 @@ export default function SubscriptionPage() {
 
   const getServices = () => {
     switch (scenario) {
-      case "subscribed": return subscribedServices
+      case "subscribed": return buildSubscribedServices(cafe24Connected, kakaoConnected, naverConnected)
       case "cancelling": return cancellingServices
       case "free": return freeServices
       case "free-subscribed": return freeSubscribedServices
@@ -165,7 +175,8 @@ export default function SubscriptionPage() {
   return (
     <div className="container mx-auto p-6 max-w-4xl space-y-6">
       {/* Dev Mode */}
-      <div className="rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 p-4">
+      <div className="rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 p-4 space-y-3">
+        <p className="text-xs font-semibold text-amber-700">개발/테스트용</p>
         <div className="flex items-center gap-4">
           <Label className="text-xs font-semibold text-amber-700 whitespace-nowrap">시나리오</Label>
           <Select value={scenario} onValueChange={(v) => setScenario(v as Scenario)}>
@@ -181,8 +192,24 @@ export default function SubscriptionPage() {
               <SelectItem value="none">구독 없음</SelectItem>
             </SelectContent>
           </Select>
-          <span className="text-[10px] text-amber-600">개발/테스트용</span>
         </div>
+        {scenario === "subscribed" && (
+          <div className="flex flex-wrap gap-4 pt-1">
+            <p className="text-xs text-amber-700 font-medium w-full">연동 상태 (구독중 시나리오)</p>
+            <label className="flex items-center gap-1.5 text-xs text-amber-800">
+              <input type="checkbox" checked={cafe24Connected} onChange={(e) => setCafe24Connected(e.target.checked)} className="rounded" />
+              마수동 — 카페24 연동
+            </label>
+            <label className="flex items-center gap-1.5 text-xs text-amber-800">
+              <input type="checkbox" checked={kakaoConnected} onChange={(e) => setKakaoConnected(e.target.checked)} className="rounded" />
+              채팅상담 — 카카오톡 연동
+            </label>
+            <label className="flex items-center gap-1.5 text-xs text-amber-800">
+              <input type="checkbox" checked={naverConnected} onChange={(e) => setNaverConnected(e.target.checked)} className="rounded" />
+              채팅상담 — 네이버톡톡 연동
+            </label>
+          </div>
+        )}
       </div>
 
       {/* 페이지 타이틀 */}
