@@ -45,6 +45,8 @@ interface SubscriptionService {
   }
   // 서비스 이용에 필요한 외부 연동 목록
   integrations?: IntegrationItem[]
+  // 이벤트 참여 여부
+  eventParticipated?: boolean
   amount: string
   isPaymentToday: boolean
 }
@@ -84,11 +86,16 @@ export function SubscriptionCard({ service }: { service: SubscriptionService }) 
     <>
       <Card>
         <CardContent className="pt-6 space-y-4">
-          {/* 상단: 서비스명 + 상태 뱃지 */}
+          {/* 상단: 서비스명 + 상태 뱃지 + 이벤트 참여 완료 뱃지 */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <h3 className="text-lg font-semibold">{service.serviceName}</h3>
               <Badge className={config.color}>{currentStatus}</Badge>
+              {service.eventParticipated && (
+                <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+                  이벤트 참여완료
+                </Badge>
+              )}
             </div>
             {service.subscriptionType && (
               <span className="text-sm text-muted-foreground">{service.subscriptionType}</span>

@@ -32,6 +32,7 @@ const buildSubscribedServices = (cafe24Connected: boolean, kakaoConnected: boole
     startDate: "2026.01.20",
     amount: "월 55,000원(VAT포함)",
     isPaymentToday: false,
+    eventParticipated: true,
     integrations: [
       { name: "카페24", connected: cafe24Connected, linkUrl: "/settings/company" },
     ],
@@ -45,6 +46,7 @@ const buildSubscribedServices = (cafe24Connected: boolean, kakaoConnected: boole
     startDate: "2026.02.01",
     amount: "월 33,000원(VAT포함)",
     isPaymentToday: false,
+    eventParticipated: false,
     integrations: [
       { name: "카카오톡", connected: kakaoConnected, linkUrl: "/settings/company" },
       { name: "네이버톡톡", connected: naverConnected, linkUrl: "/settings/company" },
@@ -62,6 +64,7 @@ const cancellingServices = [
     endDate: "2027.01.19",
     amount: "월 55,000원(VAT포함)",
     isPaymentToday: false,
+    eventParticipated: true,
   },
 ]
 
@@ -105,6 +108,7 @@ const subscribedWithFreeServices = [
     endDate: "2027.01.19", // 구독 종료일 (1년)
     amount: "월 55,000원(VAT포함)",
     isPaymentToday: false,
+    eventParticipated: true,
     freeTicket: {
       freePeriodStart: "2027.01.20", // 구독 종료 다음날부터
       freePeriodEnd: "2027.03.19", // 2달간
