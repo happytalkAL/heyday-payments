@@ -111,7 +111,7 @@ export function ServicePayment() {
     // 기존카드 결제: 바로 결제 처리 -> 구독현황 이동
     router.push("/payment/subscription")
     setTimeout(() => {
-      alert("결제가 완료되었습니다.")
+      alert("[구독 이벤트 참여 완료] 결제가 정상적으로 처리되어 구독 서비스를 시작합니다. 30일 무료 이용권은 결제일 기준 다다음주 월요일에 자동 지급됩니다. (※ 당일 구독 해지 시 혜택 지급 대상에서 제외됩니다.)")
     }, 300)
   }
 
@@ -123,7 +123,7 @@ export function ServicePayment() {
     if (confirmed) {
       router.push("/payment/subscription")
       setTimeout(() => {
-        alert("결제가 완료되었습니다.")
+        alert("[구독 이벤트 참여 완료] 결제가 정상적으로 처리되어 구독 서비스를 시작합니다. 30일 무료 이용권은 결제일 기준 다다음주 월요일에 자동 지급됩니다. (※ 당일 구독 해지 시 혜택 지급 대상에서 제외됩니다.)")
       }, 300)
     }
   }
@@ -640,7 +640,7 @@ export function ServicePayment() {
               <div className="flex items-start gap-2.5 rounded-lg bg-amber-50 border border-amber-200 p-4">
                 <AlertCircle className="h-4 w-4 mt-0.5 text-amber-600 flex-shrink-0" />
                 <p className="text-sm text-amber-700">
-                  신규 카드로 결제하면 현재 이용 중인 다른 구독 서비스의 다음 자동결제 수단도 새로 등록된 카드로 변경됩니다.
+                  신규 카드로 결제하면 현재 이용 중��� 다른 구독 서비스의 다음 자동결제 수단도 새로 등록된 카드로 변경됩니다.
                 </p>
               </div>
             )}
