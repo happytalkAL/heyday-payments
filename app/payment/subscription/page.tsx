@@ -222,6 +222,15 @@ export default function SubscriptionPage() {
         <p className="text-sm text-muted-foreground mt-1">현재 이용 중인 서비스와 결제 정보를 확인하고 관리할 수 있습니다.</p>
       </div>
 
+      {/* 이벤트 배너 */}
+      <div className="w-full rounded-xl overflow-hidden">
+        <img
+          src="/images/event-banner.png"
+          alt="구독 이벤트 - 구독서비스 이용하고 30일 무료 이용권 받아가세요! 이벤트 기간: 26.04.28 ~ 26.06.30"
+          className="w-full object-cover"
+        />
+      </div>
+
       {/* 구독 없음 */}
       {services.length === 0 && (
         <Card>
